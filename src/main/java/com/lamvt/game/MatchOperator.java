@@ -206,7 +206,45 @@ public class MatchOperator {
         return alpha;
     }
 
-    public void setMaxDepth(int depth){
-        this.maxDepth = depth;
+    public void newGame(Graphics g) {
+        start = true;
+
+        undoList.clear();
+
+        state.resetPosBoard();
+
+
+        if (fEnd == HUMAN_FLAG) {
+            playerFlag = PC_FLAG;
+        } else {
+            playerFlag = HUMAN_FLAG;
+        }
+
+        if (playerFlag == PC_FLAG) {
+            x = random.nextInt(3);
+            y = random.nextInt(3);
+            state.posBoard[x + 7][y + 7] = PC_FLAG;
+            undoList.add(new Point(x + 7, y + 7));
+            chessboard.drawChessman(g, (x + 7) * Chessboard.CHESSMAN_SIZE, (y + 7) * Chessboard.CHESSMAN_SIZE, imageO);
+            playerFlag = HUMAN_FLAG;
+        }
+        fEnd = 0;
+    }
+
+    public void undo(Graphics g) {
+        int leg = undoList.size();
+        if (leg > 1) {
+            Point p = undoList.get(leg - 1);
+            undoList.remove(undoList.size() - 1);
+            state.posBoard[p.x][p.y] = BLANK_FLAG;
+            repaintChessman(g);
+            if (!undoList.isEmpty()) {
+                p = undoList.get(undoList.size() - 1);
+                undoList.remove(undoList.size() - 1);
+                state.posBoard[p.x][p.y] = BLANK_FLAG;
+                repaintChessman(g);
+            }
+            fEnd = 0;
+        }
     }
 }

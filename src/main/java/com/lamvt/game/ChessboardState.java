@@ -3,23 +3,27 @@ package com.lamvt.game;
 import com.lamvt.Main;
 
 public class ChessboardState {
-    public int height, width;
     public int[][] eBoard;
     public int[][] posBoard;
+
     public ChessboardState(Chessboard board)
     {
-        height = board.row;
-        width = board.col;
         eBoard = new int[board.row][board.col];
         posBoard = new int[board.row][board.col];
     }
 
-    public void resetEBoard(){
+    private void resetBoard(int[][] board){
         for (int i = 0; i < Main.CHESSBOARD_ROW; i++) {
             for (int j = 0; j < Main.CHESSBOARD_COL; j++) {
-                eBoard[i][j] = 0;
+                board[i][j] = 0;
             }
         }
+    }
+    public void resetEBoard(){
+        this.resetBoard(eBoard);
+    }
+    public void resetPosBoard(){
+        this.resetBoard(posBoard);
     }
 
     public int[][] clonePosBoard(){
@@ -29,6 +33,7 @@ public class ChessboardState {
         }
         return clone;
     }
+
     public int gameOver(int x, int y){
         int row = 0, col = 0;
         int i;

@@ -1,12 +1,23 @@
 package com.lamvt;
 
-import com.lamvt.frame.About;
-import com.lamvt.frame.Level;
-import com.lamvt.frame.Match;
 import com.lamvt.frame.StartMenu;
 
+import javax.swing.*;
+
 public class Main {
+    public static final int CHESSBOARD_ROW = 20;
+    public static final int CHESSBOARD_COL = 20;
+    public static final StartMenu menu = new StartMenu();
+
     public static void main(String[] args) {
-        new Match(1).setVisible(true);
+//        custom look and feel
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (UnsupportedLookAndFeelException ignored) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+//         start app
+       menu.setVisible(true);
     }
 }

@@ -1,6 +1,8 @@
 package com.lamvt.frame;
 
+import com.lamvt.Main;
 import com.lamvt.constant.AppConstant;
+import com.lamvt.constant.LevelConstant;
 
 import javax.swing.*;
 import java.awt.*;
@@ -100,7 +102,7 @@ public class Level extends JFrame {
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btEasy, btHard, btMedium});
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,19 +116,19 @@ public class Level extends JFrame {
         pack();
     }
 
-    private void btEasyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEasyActionPerformed
-//        StartMenu.maxDepth = LevelConstant.DEPTH_EASY;
-//        setVisible(false);
+    private void btEasyActionPerformed(java.awt.event.ActionEvent evt) {
+        Main.menu.setDepth(LevelConstant.DEPTH_EASY);
+        setVisible(false);
     }
 
-    private void btMediumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btMediumActionPerformed
-//        StartMenu.maxDepth = LevelConstant.DEPTH_MEDIUM;
-//        setVisible(false);
+    private void btMediumActionPerformed(java.awt.event.ActionEvent evt) {
+        Main.menu.setDepth(LevelConstant.DEPTH_MEDIUM);
+        setVisible(false);
     }
 
-    private void btHardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btHardActionPerformed
-//        StartMenu.maxDepth = LevelConstant.DEPTH_HARD;
-//        setVisible(false);
+    private void btHardActionPerformed(java.awt.event.ActionEvent evt) {
+        Main.menu.setDepth(LevelConstant.DEPTH_HARD);
+        setVisible(false);
     }
 }
 

@@ -1,6 +1,10 @@
 package com.lamvt.frame;
 
+import com.lamvt.Main;
 import com.lamvt.constant.AppConstant;
+import com.lamvt.constant.LevelConstant;
+import com.lamvt.game.Chessboard;
+import com.lamvt.game.MatchOperator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +17,9 @@ import java.awt.event.ActionListener;
  */
 public class Match extends JFrame {
 
-//    private CaroChess caRoChess;
-    private Graphics grs;
+    private final MatchOperator operator;
+    private final Graphics grs;
+
     public static Timer timer;
     public Integer second, minute;
 
@@ -26,27 +31,27 @@ public class Match extends JFrame {
         setLocationRelativeTo(null);
         setIconImage(AppConstant.APP_ICON);
 
-//        caRoChess = new CaroChess(depth);
         grs = pnBoard.getGraphics();
-//        caRoChess.playerVsCom(grs);
-        timePlay();
+        operator = new MatchOperator(depth);
+        operator.startMatch(grs);
+
+        initTimer();
         timer.start();
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-//        caRoChess.drawChessBoard(grs);
-//        caRoChess.repaintChessMan(grs);
+        operator.chessboard.drawChessboard(grs);
+        operator.repaintChessman(grs);
     }
 
-    public void timePlay() {
+    public void initTimer() {
         lbTime.setFont(new Font("TimesRoman", Font.ITALIC + Font.BOLD, 18));
         lbTime.setForeground(Color.RED);
         second = 0;
         minute = 0;
         timer = new Timer(1000, new ActionListener() {
-
             public void actionPerformed(ActionEvent e) {
                 String temp = minute.toString();
                 String temp1 = second.toString();
@@ -103,19 +108,16 @@ public class Match extends JFrame {
         pnBoard.setLayout(pnBoardLayout);
         pnBoardLayout.setHorizontalGroup(
                 pnBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 504, Short.MAX_VALUE)
+                        .addGap(0, Chessboard.CHESSMAN_SIZE * Main.CHESSBOARD_ROW, Short.MAX_VALUE)
         );
         pnBoardLayout.setVerticalGroup(
                 pnBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 504, Short.MAX_VALUE)
+                        .addGap(0, Chessboard.CHESSMAN_SIZE * Main.CHESSBOARD_COL, Short.MAX_VALUE)
         );
 
         //timer text
         lbTime.setFont(new java.awt.Font("Times New Roman", 3, 18));
-        lbTime.setText("Time: ");
-        lbTime.setForeground(Color.WHITE);
-
-
+        lbTime.setText("Time: 00:00");
 
         //btn new game
         btNewGame.setFont(new java.awt.Font("Consolas", 1, 14));
@@ -167,9 +169,9 @@ public class Match extends JFrame {
                                 .addGap(8, 8, 8)
                                 .addComponent(btBack, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btUndo, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btNewGame, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btNewGame, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btUndo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
         leftPanelLayout.setVerticalGroup(
@@ -223,29 +225,28 @@ public class Match extends JFrame {
     }
 
     private void pnBoardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnBoardMouseClicked
-//        if (!caRoChess.isStart()) {
-//            return;
-//        }
-//        caRoChess.playChess(evt.getX(), evt.getY(), grs);
+        if (!operator.start) {
+            return;
+        }
+        operator.hitChess(evt.getX(), evt.getY(), grs);
     }
 
-    private void btNewGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewGameActionPerformed
-//        timePlay();
-//        timer.stop();
-//        timer.start();
-//        caRoChess.newGame(grs);
-//        repaint();
+    private void btNewGameActionPerformed(java.awt.event.ActionEvent evt) {
+        initTimer();
+        timer.stop();
+        timer.start();
+        operator.newGame(grs);
+        repaint();
     }
 
-    private void btUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUndoActionPerformed
-//        caRoChess.undoGame(grs);
-//        repaint();
+    private void btUndoActionPerformed(java.awt.event.ActionEvent evt) {
+        operator.undo(grs);
+        repaint();
     }
 
-    private void btBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBackActionPerformed
-//        setVisible(false);
-//        StartMenu menu = new StartMenu(StartMenu.maxDepth);
-//        menu.setVisible(true);
+    private void btBackActionPerformed(java.awt.event.ActionEvent evt) {
+        setVisible(false);
+        Main.menu.setVisible(true);
     }
 
     private javax.swing.JButton btBack;

@@ -1,5 +1,6 @@
 package com.lamvt.frame;
 
+import com.lamvt.Main;
 import com.lamvt.constant.AppConstant;
 
 import javax.swing.*;
@@ -11,13 +12,11 @@ import java.awt.*;
  */
 public class StartMenu extends JFrame {
 
-//    private InterfaceGame interfa;
-//    private LevelOption levelOption;
-//    public static int maxDepth = 3;
-
     private Help help;
     private Level level;
     private About about;
+
+    private int depth;
 
     private JButton btAbout;
     private JButton btExit;
@@ -27,7 +26,7 @@ public class StartMenu extends JFrame {
     private JLabel jLabel1;
     private JPanel jPanel1;
 
-    public StartMenu(int depth) {
+    public StartMenu() {
         initComponents();
         jPanel1.requestFocusInWindow();
         setTitle(AppConstant.APP_NAME);
@@ -35,7 +34,6 @@ public class StartMenu extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setIconImage(AppConstant.APP_ICON);
-//        this.maxDepth = depth;
 
         help = new Help();
         level = new Level();
@@ -170,9 +168,8 @@ public class StartMenu extends JFrame {
     }
 
     private void btNewGameActionPerformed(java.awt.event.ActionEvent evt) {
-//        setVisible(false);
-//        interfa = new InterfaceGame(maxDepth);
-//        interfa.setVisible(true);
+        this.setVisible(false);
+        new Match(depth).setVisible(true);
     }
 
     private void btHelpActionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,6 +184,10 @@ public class StartMenu extends JFrame {
             this.about = new About();
         }
         this.about.setVisible(true);
+    }
+
+    public void setDepth(int depth){
+        this.depth = depth;
     }
 }
 
